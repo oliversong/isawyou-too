@@ -101,6 +101,12 @@ class Post(StdMixin, Base):
         d['replies'] = self.replies_enabled
         return d
 
+    @staticmethod
+    def get_visible_posts():
+        s = Session()
+        return s.query(Post).filter(Post.is_visible == True).\
+            order_by(Post.post_date.desc())
+
 class Comment(StdMixin, Base):
     post_id = Column(Integer, ForeignKey('post.id'))
     post_date = Column(DateTime)

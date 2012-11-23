@@ -16,3 +16,13 @@ def api_view_post(post_id):
     if not p.is_visible:
         return standardize_json({}, 'notfound')
     return standardize_json(p.rep_as_dict())
+
+@app.route('/api/post/page/<int:page>')
+@crossdomain(origin = '*')
+def api_view_page(page):
+    posts = Post.get_visible_posts()[20 * (page - 1):20 * page]
+    post_list = []
+    for post in posts:
+        post_list.append(post.rep_as_dict())
+    status = 'ok' if len(post_list) > 0 else 'notfound'
+    return standardize_json({'posts': post_list, 'page': page}, status)
