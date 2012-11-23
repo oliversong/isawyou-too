@@ -105,7 +105,21 @@ class Comment(StdMixin, Base):
         self.author_gender = author_gender
         self.is_visible = False
 
+    def upvote(self, voter):
+        vote = Vote(self, 'UP', voter)
+        vote.add()
+
+    def downvote(self, voter):
+        vote = Vote(self, 'DOWN', voter)
+        vote.add()
+
 class Vote(StdMixin, Base):
     comment_id = Column(Integer, ForeignKey('comment.id'))
     direction = Column(Enum('UP', 'DOWN'))
     voter = Column(String(8))
+
+    def __init__(self, comment, direction, voter):
+        self.comment = comment
+        self.direction = direction
+        self.voter = voter
+
