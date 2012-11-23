@@ -81,3 +81,6 @@ def before_request():
     else:
         g.athena = None
 
+# Put URL registrations here!
+import posts
+

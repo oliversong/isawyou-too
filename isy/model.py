@@ -10,6 +10,7 @@ from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from sqlalchemy.orm import relationship, scoped_session, sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.types import Text, Integer, String, DateTime, Enum, Boolean
+from time import mktime
 
 # entro is a file that defines the database values. you should create it.
 
@@ -87,6 +88,18 @@ class Post(StdMixin, Base):
             return s.query(Post).filter(Post.id == post_id).one()
         except NoResultFound:
             return None
+
+    def rep_as_dict(self):
+        d = {}
+        d['id'] = self.id
+        d['title'] = self.title
+        d['body'] = self.body
+        d['authorGender'] = self.author_gender
+        d['sawGender'] = self.saw_gender
+        d['commentCount'] = self.num_comments()
+        d['postDate'] = int(mktime(self.post_date.timetuple()))
+        d['replies'] = self.replies_enabled
+        return d
 
 class Comment(StdMixin, Base):
     post_id = Column(Integer, ForeignKey('post.id'))
