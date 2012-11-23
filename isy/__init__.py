@@ -16,6 +16,8 @@ from model import *
 
 app = Flask(__name__)
 
+moderators = ('stum', 'cbieden')
+
 def crossdomain(origin = None, methods = None, headers = None,
                 max_age = 21600, attach_to_all = True,
                 automatic_options = True):

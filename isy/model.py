@@ -62,6 +62,8 @@ class Post(StdMixin, Base):
 
     comments = relationship('Comment', backref = 'post')
 
+    allowed_genders = ('M', 'F', 'O')
+
     def __init__(self, title, body, ip, author_gender, saw_gender):
         self.title = title
         self.body = body
