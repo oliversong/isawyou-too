@@ -17,6 +17,7 @@ def api_view_post(post_id):
         return standardize_json({}, 'notfound')
     return standardize_json(p.rep_as_dict())
 
+@app.route('/api/post/', methods = ['GET'], defaults = {'page': 1})
 @app.route('/api/post/page/<int:page>')
 @crossdomain(origin = '*')
 def api_view_page(page):
