@@ -46,7 +46,7 @@ class StdMixin(Common):
     id = Column(Integer, primary_key = True)
 
 class Post(StdMixin, Base):
-    title = Column(String)
+    title = Column(String(50))
     body = Column(Text)
     author = Column(String(8))
     replies_enabled = Column(Boolean)
