@@ -74,6 +74,9 @@ class Post(StdMixin, Base):
         self.replies_enabled = False
         self.sticky = False
 
+    def __str__(self):
+        return "Post <%s>" % (self.title)
+
     def num_comments(self):
         return len(self.comments)
 
@@ -105,6 +108,10 @@ class Comment(StdMixin, Base):
         self.author_gender = author_gender
         self.is_visible = False
 
+    def __str__(self):
+        c = (self.body[:10] + '...') if len(self.body) > 10 else self.body
+        return "Comment <%s> on %s" % (c, self.post)
+
     def upvote(self, voter):
         vote = Vote(self, 'UP', voter)
         vote.add()
@@ -123,3 +130,5 @@ class Vote(StdMixin, Base):
         self.direction = direction
         self.voter = voter
 
+    def __str__(self):
+        return "%s vote by %s on comment %s" % (self.direction, self.voter, self.comment_id)
