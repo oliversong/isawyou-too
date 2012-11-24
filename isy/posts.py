@@ -7,7 +7,7 @@ Created on Nov 22, 2012
 from flask import abort
 from flask.globals import request, g
 from isy import app, crossdomain, standardize_json, moderators
-from isy.model import Post
+from isy.model import Post, save_all_changes
 
 @app.route('/api/post/<int:post_id>')
 @crossdomain(origin = '*')
@@ -48,3 +48,25 @@ def api_create_post():
     #save the post and return its id
     p.add()
     return standardize_json({'id': p.id})
+
+@app.route('/api/post/<int:post_id>', methods = ['PUT'])
+@crossdomain(origin = '*')
+def api_update_post(post_id):
+    p = Post.get_by_id(post_id)
+    if p is None:
+        return standardize_json({}, 'notfound')
+    #most of this function requires moderation bits, and it is highly limited in what it can update
+    if g.athena not in moderators and g.athena != p.author:
+        return standardize_json({}, 'notauthorized')
+    if 'replies' in request.form:
+        p.replies_enabled = request.form['replies'] == 'true'
+    #if actor isn't a moderator, no effect! same for passing in random garbage
+    if g.athena in moderators:
+        if 'sticky' in request.form:
+            p.sticky = request.form['sticky'] == 'true'
+        if 'visible' in request.form:
+            p.is_visible = request.form['visible'] == 'true'
+        if 'moderated' in request.form:
+            p.been_moderated = request.form['moderated'] == 'true'
+    save_all_changes()
+    return standardize_json({})
