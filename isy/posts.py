@@ -70,3 +70,16 @@ def api_update_post(post_id):
             p.been_moderated = request.form['moderated'] == 'true'
     save_all_changes()
     return standardize_json({})
+
+@app.route('/api/post/<int:post_id>', methods = ['DELETE'])
+@crossdomain(origin = '*')
+def api_delete_post(post_id):
+    p = Post.get_by_id(post_id)
+    if p is None:
+        return standardize_json({}, 'notfound')
+    if g.athena not in moderators:
+        return standardize_json({}, 'notauthorized')
+    p.is_visible = False
+    p.been_moderated = True
+    save_all_changes()
+    return standardize_json({})
