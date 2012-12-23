@@ -4,7 +4,7 @@
 # In order to keep this file readable, though, we want to use this file simply
 # for the basic setup. Import the app object from this file, and import the view
 # file that you write here.
-# 
+#
 # If you want cross-domain requests (useful for API stuff!), make sure to import
 # crossdomain from this file as well.
 #===============================================================================
@@ -12,7 +12,6 @@
 from datetime import timedelta
 from flask import *
 from functools import update_wrapper
-from model import *
 
 app = Flask(__name__)
 
