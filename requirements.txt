@@ -1,0 +1,11 @@
+Flask==0.9
+Flask-Script==0.5.1
+Jinja2==2.6
+Mako==0.7.3
+MarkupSafe==0.15
+SQLAlchemy==0.8.0b2
+Werkzeug==0.8.3
+alembic==0.4.1
+ipython==0.13.1
+mysql-python==1.2.4b4
+pyreadline==2.0-dev1
