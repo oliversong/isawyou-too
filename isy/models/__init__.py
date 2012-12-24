@@ -1,11 +1,15 @@
-from isy.entro import DB_USER, DB_PWD, DB_HOST, DB_NAME
 from sqlalchemy.engine import create_engine
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.schema import Column
 from sqlalchemy.types import Integer
+import sys
 
 # entro is a file that defines the database values. you should create it.
+try:
+    from isy.entro import DB_USER, DB_PWD, DB_HOST, DB_NAME
+except ImportError as e:
+    raise ImportError, "No database values found. Have you defined entro.py?", sys.exc_info()[2]
 
 Base = declarative_base()
 engine = create_engine('mysql://%s:%s@%s/%s' % (DB_USER, DB_PWD, DB_HOST, DB_NAME))
